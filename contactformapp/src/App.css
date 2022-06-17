@@ -1,0 +1,54 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.label{
+  display: block;
+  text-align: center;
+  font-size: 20px;
+  margin: 0 0 2vh 0;
+}
+
+.input{
+  width: 400px;
+  margin: .9vw 0 ;
+  border-radius: 5px;
+  font-size: 20px;
+  border: 2px solid #0771eb;
+}
+
+.textarea{
+  height: 200px;
+  width: 400px;
+  resize: none;
+  padding-left: 5px;
+  padding-top: 10px;
+  margin-bottom: 10px;
+  border: 2px solid #0771eb;
+}
+
+.btn-primary {
+  color: #fff;
+  text-align: center;
+  font-size: 15px;
+  padding: 15px;
+  border-radius: 15px;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
