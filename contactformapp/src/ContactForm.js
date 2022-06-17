@@ -9,19 +9,27 @@ const ContactForm = () => {
     const { subject, email, message } = e.target.elements;
     let details = {
       subject: subject.value,
-      email: email.value,
-      message: message.value,
+      to: email.value,
+      body: message.value,
     };
-    let response = await fetch("http://localhost:5000/contact", {
+    try
+    {
+    let response = await fetch("http://localhost:7071/api/EmailNotifier", {
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
       },
       body: JSON.stringify(details),
     });
-    setStatus("Submit");
-    let result = await response.json();
-    alert(result.status);
+    alert("Email Send Request Status " + response.statusText + " With Status Code: " + response.status);
+    }
+    catch(e){
+      console.log('Request Error:', e);   
+      alert("An Error occured while sending email");     
+    }
+    finally{
+      setStatus("Submit");
+    }
   };
   return (
     <form onSubmit={handleSubmit}>
