@@ -13,10 +13,11 @@ using Microsoft.Extensions.Configuration;
 
 namespace EmailNotification
 {
-    public static class EmailNotifier
+    public class EmailNotifier
     {
         [FunctionName("EmailNotifier")]
-        public static async Task<IActionResult> Run(
+        [return: SendGrid(ApiKey = "SENDGRID_API_KEY")]
+        public async Task<SendGridMessage> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
             ILogger log, ExecutionContext context)
         {
@@ -26,16 +27,11 @@ namespace EmailNotification
             EmailRequest emailRequest = JsonConvert.DeserializeObject<EmailRequest>(requestBody);
 
             var config = GetConfiguration(context);
-            var apiKey = config["SENDGRID_API_KEY"];
-            var client = new SendGridClient(apiKey);
-            var msg = CreateSendGridEmailMessage(emailRequest, config);
-            var response = await client.SendEmailAsync(msg);
-            log.LogInformation($"SendGrid response: {response.StatusCode}");
-
-            return new StatusCodeResult((int)response.StatusCode);
+            SendGridMessage message = CreateSendGridEmailMessage(emailRequest, config);
+            return message;
         }
 
-        private static IConfiguration GetConfiguration(ExecutionContext context)
+        private IConfiguration GetConfiguration(ExecutionContext context)
         {
             var config = new ConfigurationBuilder()
             .SetBasePath(context.FunctionAppDirectory)
@@ -46,7 +42,7 @@ namespace EmailNotification
             return config;
         }
 
-        private static SendGridMessage CreateSendGridEmailMessage(EmailRequest emailRequest, IConfiguration config)
+        private SendGridMessage CreateSendGridEmailMessage(EmailRequest emailRequest, IConfiguration config)
         {
             var msg = new SendGridMessage()
             {
